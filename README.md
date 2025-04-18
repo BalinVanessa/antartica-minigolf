@@ -9,3 +9,5 @@ The icy structures of the arctic will be a rough terrain to navigate, as you swi
 Once the egg is back safely in its nest, it’ll need warmth to grow. Nurture your egg and watch it hatch!
 
 Video Link: https://www.youtube.com/watch?v=PA0Vwp7nm9c
+
+![Photo of the antarctica themed mini golf course](https://github.com/BalinVanessa/antartica-minigolf/blob/main/AntarcticAdventurePhoto.jpeg)
