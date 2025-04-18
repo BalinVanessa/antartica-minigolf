@@ -11,15 +11,13 @@ int position = 10;
 SoftwareSerial DF1201SSerial(2, 3);
 DFRobot_DF1201S DF1201S;
 
-Servo penguin;
-
-bool triggered = false; // Only trigger once per detection
+// MP3 VARIABLES
+#define HATCH_NOISE_LENGTH  3500; // 3.5 seconds
+long timeTillHatchStop;
+bool hatchNoiseIsPlaying = false;
 
 void setup() {
   Serial.begin(9600);
-
-  penguin.attach(9);       // Servo on pin 9
-  penguin.write(10);       // Initial resting position
 
   DF1201SSerial.begin(115200);
   while (!DF1201S.begin(DF1201SSerial)) {
@@ -29,8 +27,13 @@ void setup() {
 
   Serial.println("DF1201S online");
 
-  DF1201S.setVol(20); // Volume (0–30)
-  DF1201S.setPlayMode(DF1201S.ALLCYCLE); // Play once, don't loop
+  DF1201S.setVol(25); // Volume (0–30)
+  delay(500);
+  DF1201S.switchFunction(DF1201S.MUSIC);
+  delay(500);
+  DF1201S.setPlayMode(DF1201S.SINGLE); // Play once, don't loop
+  delay(500);
+  
 
   // Human Presence
   Wire.begin();
@@ -42,7 +45,6 @@ void setup() {
 }
 
 void loop() {
-
   if (movementSensor.available())
   {
     ir1 = movementSensor.getIR1();
@@ -53,7 +55,7 @@ void loop() {
 
     movementSensor.refresh(); //Read dummy register after new data is read
 
-    //Note: The observable area is shown in the silkscreen.
+    //Note: The observable area is shown in the silkscreen. We used these print statements to chek values.
     //If sensor 2 increases first, the human is on the left
     // Serial.print("1:DWN[");
     // Serial.print(ir1);
@@ -71,21 +73,11 @@ void loop() {
     // Serial.println();
   }
 
-  bool presenceDetected = (ir1 > 10000) || (ir2 > 10000) || (ir3 > 10000) || (ir4 > 10000);
+  bool presenceDetected = (ir1 >  1000) || (ir2 > 1000) || (ir3 > 1000) || (ir4 > 1000);
 
-  if (presenceDetected) {
-    DF1201S.start();      // Play MP3 file 1
-    delay(100);
-    position = 170;
-    penguin.write(position);            // Rotate servo
-    triggered = true;             // Lock trigger
-  }
-  else if (!presenceDetected) {
-    DF1201S.pause();
-    delay(100);
-    position = 10;
-    penguin.write(position);            // Return to resting
-    triggered = false;            // Reset trigger flag
-    
+  if (presenceDetected && millis() >= timeTillHatchStop) {
+    DF1201S.playFileNum(1);
+    Serial.println("Playing sound!");
+    timeTillHatchStop = millis() + HATCH_NOISE_LENGTH;
   }
 }

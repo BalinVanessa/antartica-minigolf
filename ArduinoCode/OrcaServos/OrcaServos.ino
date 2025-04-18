@@ -11,18 +11,19 @@ Servo ORCA_TAIL_SERVO;
 
 // CONSTANTS FOR TINY ORCAS JUMPING
 #define TIME_TO_ORCA_JUMP       2000
-#define ORCA_LEFT_JUMP_ANGLE    80
-#define ORCA_RIGHT_JUMP_ANGLE   110
-
+#define ORCA_ONE_DOWN_ANGLE     130
+#define ORCA_ONE_UP_ANGLE       70
+#define ORCA_TWO_DOWN_ANGLE     45
+#define ORCA_TWO_UP_ANGLE       70
 // VARIABLES FOR TINY ORCAS JUMPING
 bool orcaIsJumping = false;
 bool orcaJumpsInForwardDirection = false;
 long timeToStartOrcaJump;
 
 // CONSTANTS FOR ORCA TAIL FLIPPING
-#define TIME_TO_FLIP_TAIL       4000
+#define TIME_TO_FLIP_TAIL       3000
 #define TAIL_DOWN_ANGLE         90
-#define TAIL_UP_ANGLE           30
+#define TAIL_UP_ANGLE           60
 
 // VARIABLES FOR ORCA TAIL FLIPPING
 bool orcaTailIsFlipping = false;
@@ -39,13 +40,9 @@ void setup() {
   ORCA_JUMP_SERVO_2.attach(ORCA_JUMP_SERVO_PIN_2);
   ORCA_TAIL_SERVO.attach(ORCA_TAIL_SERVO_PIN);
 
-  // COMMENT OUT LATER -- USE THIS TO GET THE SERVO ARMS IN THE CORRECT POSITION
-  // ORCA_JUMP_SERVO_1.write(90);
-  // ORCA_JUMP_SERVO_2.write(90);
-  // ORCA_TAIL_SERVO.write(90);
-
-  ORCA_JUMP_SERVO_1.write(ORCA_LEFT_JUMP_ANGLE);
-  ORCA_JUMP_SERVO_2.write(ORCA_RIGHT_JUMP_ANGLE);
+  // MOVE ORCAS INTO STARTING POSITION
+  ORCA_JUMP_SERVO_1.write(ORCA_ONE_UP_ANGLE);
+  ORCA_JUMP_SERVO_2.write(ORCA_TWO_UP_ANGLE);
   ORCA_TAIL_SERVO.write(TAIL_DOWN_ANGLE);
 
   // set states for orca jumping to false
@@ -80,16 +77,16 @@ void loop() {
 
 void orcaJumpsForward() {
   Serial.println("ORCAS JUMP FORWARD!!");
-  ORCA_JUMP_SERVO_1.write(ORCA_LEFT_JUMP_ANGLE);
-  ORCA_JUMP_SERVO_2.write(ORCA_RIGHT_JUMP_ANGLE);
+  ORCA_JUMP_SERVO_1.write(ORCA_ONE_DOWN_ANGLE);
+  ORCA_JUMP_SERVO_2.write(ORCA_TWO_DOWN_ANGLE);
   
   resetOrcaJumpTime();
 }
 
 void orcaJumpsBackwards() {
   Serial.println("ORCAS JUMP BACKWARDS!!");
-  ORCA_JUMP_SERVO_1.write(ORCA_RIGHT_JUMP_ANGLE);
-  ORCA_JUMP_SERVO_2.write(ORCA_LEFT_JUMP_ANGLE);
+  ORCA_JUMP_SERVO_1.write(ORCA_ONE_UP_ANGLE);
+  ORCA_JUMP_SERVO_2.write(ORCA_TWO_UP_ANGLE);
 
   resetOrcaJumpTime();
 }

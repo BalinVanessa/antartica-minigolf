@@ -73,10 +73,10 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   //pass setDrive() a motor number, direction as 0(call 0 forward) or 1, and level from 0 to 255
-  sealHuntMotorDriver.setDrive( MOTOR_NUM, 0, 255);
+  sealHuntMotorDriver.setDrive( MOTOR_NUM, 0, 120);
 
   //IGLOO LED CODE
-  // read the state of the pushbutton value:
+  // read the state of the igloo sensor value:
   iglooSensorState = digitalRead(IGLOO_SENSOR_PIN);
 
   // check if the sensor beam is broken
